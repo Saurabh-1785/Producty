@@ -1,0 +1,31 @@
+content,author,source,date
+"The new dashboard is incredibly slow to load when I have more than 50 projects. It takes almost 10 seconds to render the page.",john_doe,support_ticket,2023-10-01
+"I love the new dark mode, but the contrast on the secondary buttons is a bit too low. Hard to read the text.",sarah_smith,in-app_feedback,2023-10-02
+"Can we get an integration with Jira? Our team uses it heavily and right now we are copying and pasting links manually.",mike_jones,feature_request,2023-10-03
+"The CSV upload feature just threw a 500 error when I tried to upload a file with 10,000 rows. Is there a file size limit?",alice_williams,bug_report,2023-10-04
+"The analytics page is confusing. The charts don't clearly explain what the Y-axis represents.",david_brown,usability_study,2023-10-05
+"Would be great if we could export the clustered results to a PDF report for management.",emily_davis,feature_request,2023-10-06
+"Login via Google failed twice today. Had to use email/password instead.",chris_wilson,support_ticket,2023-10-07
+"The clustering algorithm is amazing! It perfectly grouped all the UI issues together.",amanda_taylor,in-app_feedback,2023-10-08
+"Need role-based access control (RBAC). Right now everyone can see everything, which is a security concern for us.",james_anderson,sales_call,2023-10-09
+"The typography on the mobile app is too small. Please increase the base font size.",jessica_thomas,app_store_review,2023-10-10
+"The API rate limits are too restrictive for our enterprise use case.",robert_jackson,support_ticket,2023-10-11
+"It would be extremely helpful to have a Slack integration that notifies us when a new cluster is formed.",laura_white,feature_request,2023-10-12
+"When I click on a cluster, sometimes it doesn't load the associated documents. Just shows a spinning wheel.",kevin_harris,bug_report,2023-10-13
+"The onboarding tutorial was very clear and helped me understand the platform quickly.",michelle_martin,in-app_feedback,2023-10-14
+"Please add support for SSO via Okta. It's a requirement from our IT department.",brian_thompson,feature_request,2023-10-15
+"The search functionality doesn't seem to support fuzzy matching. Typos yield zero results.",megan_garcia,usability_study,2023-10-16
+"We need a way to manually merge two clusters if the AI doesn't group them together.",daniel_martinez,feature_request,2023-10-17
+"The email notifications are too frequent. Can we have a daily digest option?",ashley_robinson,support_ticket,2023-10-18
+"Great tool overall, but the pricing page is a bit confusing. Not sure what counts as a 'signal'.",jason_clark,in-app_feedback,2023-10-19
+"The export to CSV function seems to be missing the 'author' column.",stephanie_rodriguez,bug_report,2023-10-20
+"Can we customize the colors of the clusters in the dashboard?",matthew_lewis,feature_request,2023-10-21
+"The application crashed when I tried to delete a project.",nicole_lee,bug_report,2023-10-22
+"I would like to see a public roadmap of upcoming features.",andrew_walker,in-app_feedback,2023-10-23
+"The documentation for the API is outdated. It doesn't mention the new endpoint for manual ingestion.",samantha_hall,support_ticket,2023-10-24
+"Is it possible to integrate with GitHub issues?",ryan_allen,feature_request,2023-10-25
+"The loading animation is a bit distracting. Maybe make it more subtle?",melissa_young,usability_study,2023-10-26
+"We need the ability to filter signals by date range in the dashboard.",justin_hernandez,feature_request,2023-10-27
+"The password reset link expired too quickly. I didn't get to it in time.",rachel_king,support_ticket,2023-10-28
+"The platform is very intuitive. I was up and running in minutes.",brandon_wright,in-app_feedback,2023-10-29
+"Can we have a webhook that triggers when a specific keyword is detected in a signal?",heather_lopez,feature_request,2023-10-30
