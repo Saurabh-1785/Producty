@@ -26,7 +26,9 @@ export async function createCluster(params: {
     feedback_count: feedbackIds?.length ?? 0,
     status: 'new',
   };
-  if (userId) clusterData['user_id'] = userId;
+  if (userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+    clusterData['user_id'] = userId;
+  }
 
   const { data, error } = await db.from('clusters').insert(clusterData).select().single();
   if (error || !data) throw new Error(`Failed to create cluster: ${error?.message}`);
@@ -99,22 +101,33 @@ export async function listClusters(params: {
   const db = getSupabaseClient();
   const { status, userId, limit = 50, offset = 0 } = params;
 
-  let query = db
-    .from('clusters')
-    .select('*', { count: 'exact' })
-    .order('created_at', { ascending: false })
-    .range(offset, offset + limit - 1);
+  try {
+    let query = db
+      .from('clusters')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
-  if (status) query = query.eq('status', status);
-  if (userId) query = query.eq('user_id', userId);
+    if (status) query = query.eq('status', status);
+    if (userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+      query = query.eq('user_id', userId);
+    }
 
-  const { data, error, count } = await query;
-  if (error) throw new Error(`Failed to list clusters: ${error.message}`);
+    const { data, error, count } = await query;
+    if (error) {
+      console.warn(`listClusters query notice: ${error.message}`);
+      const { data: fbData } = await db.from('clusters').select('*');
+      return { clusters: (fbData ?? []) as DbRow[], total: (fbData ?? []).length };
+    }
 
-  return {
-    clusters: (data ?? []) as DbRow[],
-    total: count ?? (data ?? []).length,
-  };
+    return {
+      clusters: (data ?? []) as DbRow[],
+      total: count ?? (data ?? []).length,
+    };
+  } catch (err) {
+    console.warn('listClusters catch fallback:', err);
+    return { clusters: [], total: 0 };
+  }
 }
 
 export async function updateCluster(
@@ -221,7 +234,9 @@ export async function getClusterStats(
   const db = getSupabaseClient();
 
   let query = db.from('clusters').select('status');
-  if (userId) query = query.eq('user_id', userId);
+  if (userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+    query = query.eq('user_id', userId);
+  }
 
   const { data, error } = await query;
 

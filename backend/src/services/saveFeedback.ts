@@ -54,7 +54,7 @@ export async function getFeedbackStats(
   const client = getSupabaseClient();
 
   let query = client.from('feedback').select('source');
-  if (userId) {
+  if (userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
     query = query.eq('user_id', userId);
   }
 
@@ -90,7 +90,7 @@ export async function getRecentFeedbacks(
     .order('created_at', { ascending: false })
     .limit(limit);
 
-  if (userId) {
+  if (userId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
     query = query.eq('user_id', userId);
   }
 

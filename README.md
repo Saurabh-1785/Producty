@@ -127,15 +127,14 @@ A modern, visually stunning frontend interface built in **Next.js 14 (App Router
 
 ## Complete Local Setup Guide
 
-Follow these steps to clone, configure, and run Producty on any other local machine.
+Follow these simple steps to clone, configure, and run Producty on any local machine.
 
 ### Prerequisites
 Ensure the following tools are installed:
-* **Python 3.10 or higher**
 * **Node.js 18 or higher** (with npm)
-* A **Supabase Account** (Free tier is perfectly fine!)
+* A **Supabase Account** (Free tier is fine!)
 * A **Google AI Studio API Key** (Get it for free [here](https://aistudio.google.com/))
-* **webcmd** (for Layer 0 only): `npm install -g @agentrhq/webcmd`
+* **webcmd** (for Layer 0 autonomous ingestion): `sudo npm install -g @agentrhq/webcmd`
 
 ---
 
@@ -143,126 +142,82 @@ Ensure the following tools are installed:
 1. Log in to [Supabase](https://supabase.com/) and create a new project.
 2. Go to the **SQL Editor** on the left menu.
 3. Open a **New Query** tab.
-4. Copy the entire contents of `backend/app/db/schema.sql` and paste it into the editor.
+4. Copy the SQL schema from `backend/src/db/schema.sql` (or `backend/app/db/schema.sql`) and paste it into the editor.
 5. Click **Run**. This will:
    * Enable the `vector` PostgreSQL extension.
-   * Create all 8 required tables (`feedback`, `embeddings`, `clusters`, `cluster_feedback`, `documents`, `approvals`, `integrations`, `ticket_links`).
-   * Set up PostgreSQL database triggers to auto-update `updated_at` columns.
-   * Register the custom `match_feedback` cosine-similarity function.
-6. Navigate to **Project Settings** ➔ **API** and copy your **Project URL** and **API Key (anon/public)**.
+   * Create all required tables (`feedback`, `embeddings`, `clusters`, `cluster_feedback`, `documents`, `approvals`, `integrations`, `ticket_links`).
+   * Set up the custom `match_feedback` cosine-similarity function for pgvector.
+6. Navigate to **Project Settings** ➔ **API** and copy your **Project URL** and **anon / service_role API Key**.
 
 ---
 
-### Step 2: Backend Setup
-Open a terminal in the project root:
+### Step 2: Backend Setup (Node.js + Express)
+Open a terminal in the project directory:
 
-1. **Activate Python Virtual Environment**:
+1. **Navigate to backend and install dependencies**:
    ```bash
-   # Create virtual environment
-   python3 -m venv .venv
-   
-   # Activate it
-   source .venv/bin/activate
+   cd backend
+   npm install
    ```
 
-2. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure Environment Variables**:
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Open `.env` and fill in the values:
+2. **Configure Environment Variables**:
+   Create a `.env` file in the `backend/` folder:
    ```env
-   # Database connection parameters (from Supabase Project Settings -> API)
+   PORT=8000
    SUPABASE_URL=https://your-project-id.supabase.co
-   SUPABASE_KEY=your-supabase-anon-or-service-role-key
-
-   # Gemini API Credentials (from Google AI Studio)
-   GOOGLE_API_KEY=your-google-api-key
-
-   # Optional Slack credentials (leave blank to skip)
-   SLACK_BOT_TOKEN=xoxb-your-bot-token
-   SLACK_APP_TOKEN=xapp-your-app-level-token
-
-   # Optional GitHub webhook secret (leave blank to skip)
-   GITHUB_WEBHOOK_SECRET=your-webhook-secret
+   SUPABASE_KEY=your-supabase-key
+   GOOGLE_API_KEY=your-google-gemini-api-key
    ```
 
-4. **Verify Database Connection**:
-   Ensure the database is reachable and configured:
+3. **Start the Backend Server**:
    ```bash
-   python3 tests/verify_db.py
+   npm run dev
    ```
-   *Expected Output:*
-   ```text
-   🔍 Checking Supabase connection...
-   ✅ Connection successful!
-   ✅ 'feedback' table found. Current row count: 0
-   ```
-
-5. **Start the FastAPI Backend**:
-   ```bash
-   uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
-   ```
-   The backend interactive documentation will be available at [http://localhost:8000/docs](http://localhost:8000/docs).
+   The backend API will run at `http://localhost:8000`. You can check health at `http://localhost:8000/health`.
 
 ---
 
-### Step 3: Frontend Setup
-Open a separate terminal window and navigate to the `frontend` directory:
+### Step 3: Frontend Setup (Next.js 14)
+Open a new terminal window:
 
-1. **Install Frontend Dependencies**:
+1. **Navigate to frontend and install dependencies**:
    ```bash
    cd frontend
    npm install
    ```
 
-2. **Configure Local Environment**:
-   Verify `.env.local` contains the correct API address:
-   ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8000
-   ```
-
-3. **Start the Next.js Dev Server**:
+2. **Start the Dev Server**:
    ```bash
    npm run dev
    ```
-   The interactive dashboard will be active at [http://localhost:3000](http://localhost:3000).
+   Open [http://localhost:3000](http://localhost:3000) in your browser to access the dashboard.
 
 ---
 
-### Step 4: Layer 0 Setup (Autonomous Ingestion)
+### Step 4: Layer 0 Setup (Autonomous webcmd Ingestion)
+Open a third terminal window to run Layer 0:
 
-1. **Install webcmd** (one-time):
+1. **Install webcmd & Layer 0 dependencies**:
    ```bash
-   npm install -g @agentrhq/webcmd
+   sudo npm install -g @agentrhq/webcmd
    webcmd skills add
-   ```
 
-2. **Install Layer 0 Dependencies**:
-   ```bash
    cd layer0
    npm install
    ```
 
-3. **Run Layer 0**:
+2. **Run Layer 0 (First Run — Explore Mode)**:
    ```bash
-   # Get your auth token from the frontend (DevTools → Application → Local Storage)
-   export APEAI_AUTH_TOKEN="your-supabase-jwt"
+   npx tsx pull_play_reviews.ts --app-id com.whatsapp --limit 10 --force-explore
+   ```
 
-   # First run — explore mode (discovers the page, slower):
-   npx tsx layer0/pull_play_reviews.ts --app-id com.whatsapp --limit 10 --token "$APEAI_AUTH_TOKEN" --force-explore
-
-   # Second run — reuse mode (uses saved adapter, faster):
-   npx tsx layer0/pull_play_reviews.ts --app-id com.whatsapp --limit 10 --token "$APEAI_AUTH_TOKEN"
+3. **Run Layer 0 (Second Run — Reuse Adapter Mode)**:
+   ```bash
+   npx tsx pull_play_reviews.ts --app-id com.whatsapp --limit 10
    ```
 
 > [!TIP]
-> See [`layer0/README.md`](layer0/README.md) for the full demo workflow with narration cues, recovery scenarios, and output examples.
+> See [`layer0/README.md`](layer0/README.md) for full details on adapter reuse, recovery fallback, and narration cues.
 
 ---
 
