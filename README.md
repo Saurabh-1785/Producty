@@ -5,6 +5,7 @@
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75C2?style=for-the-badge&logo=googlegemini&logoColor=white)](https://aistudio.google.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Webcmd](https://img.shields.io/badge/webcmd-Layer%200-FF6B35?style=for-the-badge)](https://webcmd.dev/)
 
 ApeAI is a **decoupled, layer-based Product Operations platform** that transforms raw, multi-source user feedback into structured, high-fidelity engineering tickets (BRD, PRD, Epics, Stories, and Technical Tasks). 
 
@@ -16,6 +17,9 @@ By leveraging **Google Gemini AI** for embeddings/generations, **Supabase (Postg
 
 ApeAI is built with a strictly modular architecture where **every layer is decoupled and communicates exclusively via JSON over HTTP**. This prevents direct code imports, ensuring that any single layer can be swapped out (e.g., swapping Google Gemini for OpenAI, or Supabase for local Postgres) without modifying the other layers.
 
+> [!TIP]
+> **Layer 0 (NEW)**: Autonomous feedback ingestion powered by [webcmd](https://webcmd.dev). A standalone agent explores public app review pages, extracts structured reviews, and feeds them directly into Layer 1 — no backend changes needed.
+
 ### Architecture
 
 ![ApeAI Architecture](/docs/product_ops_architecture.svg)
@@ -24,13 +28,39 @@ ApeAI is built with a strictly modular architecture where **every layer is decou
 
 ## Layer-by-Layer Working
 
+### Layer 0 — Autonomous Ingestion (webcmd)
+
+Layer 0 removes the manual step of pasting or uploading feedback. A **webcmd-powered agent** autonomously explores public app review pages (e.g., Google Play Store), extracts structured reviews, and POSTs them into Layer 1's existing ingestion endpoint.
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Layer 0: webcmd Agent                              │
+│  explore → extract → normalize → POST               │
+└───────────────────────┬─────────────────────────────┘
+                        │ POST /api/ingestion/appstore
+                        │ (existing endpoint, zero changes)
+                        ▼
+                   Layer 1 Ingestion
+```
+
+Key behaviors:
+* **Explore → Adapter → Reuse lifecycle**: On the first run, webcmd explores the page via a browser. On subsequent runs, it reuses the saved adapter — visibly faster.
+* **Recovery**: If the adapter fails on a different app, the script automatically falls back to a fresh browser exploration.
+* **Zero backend changes**: Layer 0 conforms to the existing `AppStoreReviewInput` schema. The backend normalizer automatically sets `source: 'google_play'` for `platform: 'android'` reviews.
+
+> [!NOTE]
+> Layer 0 is a standalone TypeScript script in the [`layer0/`](layer0/) directory. See [`layer0/README.md`](layer0/README.md) for full usage, demo workflow, and narration cues.
+
+---
+
 ### Layer 1 — Ingestion (Collecting Feedback)
-Layer 1 acts as the gateway for raw feedback. It supports two primary, unified methods for ingestion in the FastAPI backend:
+Layer 1 acts as the gateway for raw feedback. It supports multiple methods for ingestion:
+* **Autonomous Agent (Layer 0)**: webcmd-powered review extraction from public app stores — feeds directly into Layer 1's existing endpoints.
 * **Manual Input / Paste**: A simple text input area in the frontend dashboard that POSTs payloads directly to backend endpoints.
 * **CSV Batch Upload**: An integrated CSV file parser and batch uploader in the frontend dashboard that allows teams to ingest historical spreadsheets or lists of raw customer signals.
 
 > [!NOTE]
-> **Modular Normalization**: Regardless of whether a feedback item is pasted manually or uploaded in a batch CSV, Layer 1 normalizes the payload into a **single, unified JSON format** containing `content`, `source`, `author`, and optional `metadata` before saving.
+> **Modular Normalization**: Regardless of whether a feedback item comes from an autonomous agent, is pasted manually, or uploaded in a batch CSV, Layer 1 normalizes the payload into a **single, unified JSON format** containing `content`, `source`, `author`, and optional `metadata` before saving.
 
 ---
 
@@ -48,14 +78,16 @@ This represents the brain of ApeAI. Each step is structured as its own independe
 
 ```mermaid
 graph TD
-    Raw[Ingested Feedback] -->|Embeddings| Emb[Gemini Vector Embeddings]
+    L0["Layer 0: webcmd Agent"] -->|POST /api/ingestion/appstore| Raw[Ingested Feedback]
+    Manual[Manual / CSV Upload] --> Raw
+    Raw -->|Embeddings| Emb[Gemini Vector Embeddings]
     Emb -->|Cosine Similarity| Clust[Similarity Clustering]
-    Clust -->|Cluster Summary| BRD[1. Business Requirement Document - BRD]
-    BRD -->|Gemini Generation| PRD[2. Product Requirement Document - PRD]
-    PRD -->|Agile Decomposer| Stories[3. Agile User Stories]
-    Stories -->|Task Decomposer| Tasks[4. Frontend, Backend, QA Tasks]
+    Clust -->|Cluster Summary| BRD["1. Business Requirement Document - BRD"]
+    BRD -->|Gemini Generation| PRD["2. Product Requirement Document - PRD"]
+    PRD -->|Agile Decomposer| Stories["3. Agile User Stories"]
+    Stories -->|Task Decomposer| Tasks["4. Frontend, Backend, QA Tasks"]
     Tasks -->|Review Gate| Review{Human Review & Inline Edit}
-    Review -->|Approved| Publish[Layer 4: Push to Jira/GitHub/Linear]
+    Review -->|Approved| Publish["Layer 4: Push to Jira/GitHub/Linear"]
     Review -->|Rejected/Draft| Edit[Back to Draft/Edit]
 ```
 
@@ -103,6 +135,7 @@ Ensure the following tools are installed:
 * **Node.js 18 or higher** (with npm)
 * A **Supabase Account** (Free tier is perfectly fine!)
 * A **Google AI Studio API Key** (Get it for free [here](https://aistudio.google.com/))
+* **webcmd** (for Layer 0 only): `npm install -g @agentrhq/webcmd`
 
 ---
 
@@ -199,6 +232,37 @@ Open a separate terminal window and navigate to the `frontend` directory:
    npm run dev
    ```
    The interactive dashboard will be active at [http://localhost:3000](http://localhost:3000).
+
+---
+
+### Step 4: Layer 0 Setup (Autonomous Ingestion)
+
+1. **Install webcmd** (one-time):
+   ```bash
+   npm install -g @agentrhq/webcmd
+   webcmd skills add
+   ```
+
+2. **Install Layer 0 Dependencies**:
+   ```bash
+   cd layer0
+   npm install
+   ```
+
+3. **Run Layer 0**:
+   ```bash
+   # Get your auth token from the frontend (DevTools → Application → Local Storage)
+   export APEAI_AUTH_TOKEN="your-supabase-jwt"
+
+   # First run — explore mode (discovers the page, slower):
+   npx tsx layer0/pull_play_reviews.ts --app-id com.whatsapp --limit 10 --token "$APEAI_AUTH_TOKEN" --force-explore
+
+   # Second run — reuse mode (uses saved adapter, faster):
+   npx tsx layer0/pull_play_reviews.ts --app-id com.whatsapp --limit 10 --token "$APEAI_AUTH_TOKEN"
+   ```
+
+> [!TIP]
+> See [`layer0/README.md`](layer0/README.md) for the full demo workflow with narration cues, recovery scenarios, and output examples.
 
 ---
 
