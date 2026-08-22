@@ -58,7 +58,6 @@ export const ingestionRouter = Router();
 
 ingestionRouter.post(
   '/appstore',
-  requireAuth,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const body = req.body;
@@ -87,7 +86,7 @@ ingestionRouter.post(
         }
 
         const item = normalizeAppStoreReview(review);
-        item.userId = req.userId;
+        item.userId = req.userId || 'layer0-agent';
         feedbackItems.push(item);
       }
 

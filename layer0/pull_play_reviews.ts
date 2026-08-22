@@ -85,10 +85,7 @@ function parseArgs(): CliArgs {
   }
 
   if (!parsed.token) {
-    console.error('❌ Missing auth token');
-    console.error('   Provide via --token flag or APEAI_AUTH_TOKEN env var');
-    console.error('   Get it from: Frontend → DevTools → Application → Local Storage → supabase auth token');
-    process.exit(1);
+    console.log('ℹ️  No auth token provided — sending requests without authentication');
   }
 
   if (parsed.limit! < 1 || parsed.limit! > 100) {

@@ -105,23 +105,13 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
                 >
                   {theme === 'light' ? <Moon className="w-4.5 h-4.5" /> : <Sun className="w-4.5 h-4.5" />}
                 </button>
-                  {user ? (
-                    <Link
+                  <Link
                       href="/dashboard"
                       className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 dark:bg-white hover:bg-black dark:hover:bg-zinc-200 text-white dark:text-black text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-md shadow-slate-900/10 hover:shadow-slate-900/20"
                     >
                       Dashboard
                       <ArrowRight className="w-4 h-4" />
                     </Link>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="hidden sm:inline-flex items-center gap-1.5 bg-slate-900 dark:bg-white hover:bg-black dark:hover:bg-zinc-200 text-white dark:text-black text-sm font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-md shadow-slate-900/10 hover:shadow-slate-900/20"
-                    >
-                      Log In
-                      <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  )}
               </div>
             </div>
           </header>

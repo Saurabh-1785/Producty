@@ -1,0 +1,8 @@
+# Layer 0 Git Ignore
+node_modules/
+dist/
+.layer0-tmp/
+*.log
+*.tsbuildinfo
+.env
+.env.local
