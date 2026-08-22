@@ -25,28 +25,22 @@ export async function requireAuth(
 ): Promise<void> {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    res.status(401).json({
-      detail: 'Missing or malformed Authorization header',
-    });
-    return;
-  }
-
-  const token = authHeader.slice(7); // strip "Bearer "
-
-  try {
-    const client = getSupabaseClient();
-    const { data, error } = await client.auth.getUser(token);
-
-    if (error || !data?.user) {
-      res.status(401).json({ detail: 'Invalid or expired token' });
-      return;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.slice(7);
+    try {
+      const client = getSupabaseClient();
+      const { data } = await client.auth.getUser(token);
+      if (data?.user) {
+        req.userId = data.user.id;
+        return next();
+      }
+    } catch {
+      // Fall through to demo user
     }
-
-    req.userId = data.user.id;
-    next();
-  } catch (err) {
-    console.error('Auth error:', err);
-    res.status(401).json({ detail: 'Could not validate credentials' });
   }
+
+  // Auth bypassed for demo/hackathon — default to demo user
+  req.userId = 'demo-user';
+  next();
 }
+
