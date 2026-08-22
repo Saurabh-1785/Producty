@@ -1,0 +1,19 @@
+{
+  "name": "apeai-layer0",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ApeAI Layer 0 — Autonomous Google Play Store review ingestion via webcmd",
+  "type": "module",
+  "scripts": {
+    "pull": "tsx pull_play_reviews.ts",
+    "pull:explore": "tsx pull_play_reviews.ts --force-explore",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "tsx": "^4.15.6",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0"
+  }
+}
