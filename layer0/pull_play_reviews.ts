@@ -1,13 +1,13 @@
 #!/usr/bin/env tsx
 /**
- * ApeAI Layer 0 — Pull Play Store Reviews
+ * Producty Layer 0 — Pull Play Store Reviews
  *
  * Main CLI entry point. Orchestrates the full workflow:
  *   1. Parse CLI arguments
  *   2. Check backend health
  *   3. Use webcmd to extract reviews (explore or reuse adapter)
  *   4. Normalize to AppStoreReviewInput schema
- *   5. POST to ApeAI's /api/ingestion/appstore
+ *   5. POST to Producty's /api/ingestion/appstore
  *   6. Print summary
  *
  * Usage:
@@ -19,8 +19,8 @@
  *     [--force-explore]
  *
  * Environment variables (alternative to flags):
- *   APEAI_AUTH_TOKEN   — Supabase JWT
- *   APEAI_API_URL      — Backend URL (default: http://localhost:8000)
+ *   PRODUCTY_AUTH_TOKEN — Supabase JWT
+ *   PRODUCTY_API_URL    — Backend URL (default: http://localhost:8000)
  */
 
 import { extractReviews } from './webcmd_bridge.js';
@@ -40,8 +40,8 @@ interface CliArgs {
 function parseArgs(): CliArgs {
   const args = process.argv.slice(2);
   const parsed: Partial<CliArgs> = {
-    apiUrl: process.env['APEAI_API_URL'] || 'http://localhost:8000',
-    token: process.env['APEAI_AUTH_TOKEN'] || '',
+    apiUrl: process.env['PRODUCTY_API_URL'] || process.env['APEAI_API_URL'] || 'http://localhost:8000',
+    token: process.env['PRODUCTY_AUTH_TOKEN'] || process.env['APEAI_AUTH_TOKEN'] || '',
     limit: 10,
     forceExplore: false,
   };
@@ -99,7 +99,7 @@ function parseArgs(): CliArgs {
 function printUsage(): void {
   console.log(`
 ╔══════════════════════════════════════════════════════════════════╗
-║  ApeAI Layer 0 — Google Play Store Review Ingestion (webcmd)    ║
+║  Producty Layer 0 — Google Play Store Review Ingestion (webcmd) ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 USAGE:
@@ -109,7 +109,7 @@ OPTIONS:
   --app-id <id>       Android package name (e.g., com.whatsapp)     [REQUIRED]
   --limit <n>         Max reviews to pull (1-100, default: 10)
   --token <jwt>       Supabase JWT for authentication               [REQUIRED]
-  --api-url <url>     ApeAI backend URL (default: http://localhost:8000)
+  --api-url <url>     Producty backend URL (default: http://localhost:8000)
   --force-explore     Skip adapter reuse, force fresh browser exploration
   --help, -h          Show this help
 
@@ -134,7 +134,7 @@ EXAMPLES:
 function printBanner(args: CliArgs): void {
   console.log('');
   console.log('═'.repeat(64));
-  console.log('  🦍 ApeAI Layer 0 — Autonomous Play Store Review Ingestion');
+  console.log('  📦 Producty Layer 0 — Autonomous Play Store Review Ingestion');
   console.log('═'.repeat(64));
   console.log(`  App ID:        ${args.appId}`);
   console.log(`  Review limit:  ${args.limit}`);
@@ -183,7 +183,7 @@ function printSummary(summary: RunSummary): void {
   // Exit status
   if (summary.reviewsIngested > 0) {
     console.log('');
-    console.log(`  ✅ SUCCESS — ${summary.reviewsIngested} review(s) are now in ApeAI's pipeline.`);
+    console.log(`  ✅ SUCCESS — ${summary.reviewsIngested} review(s) are now in Producty's pipeline.`);
     console.log('     They will appear in the dashboard and are ready for Layer 2 clustering.');
   } else if (summary.reviewsFound === 0) {
     console.log('');
@@ -211,7 +211,7 @@ async function main(): Promise<void> {
   const healthy = await checkBackendHealth(args.apiUrl);
   if (!healthy) {
     console.error(`❌ Cannot reach backend at ${args.apiUrl}`);
-    console.error('   Make sure the ApeAI backend is running:');
+    console.error('   Make sure the Producty backend is running:');
     console.error('   cd backend && npm run dev');
     process.exit(1);
   }
@@ -257,7 +257,7 @@ async function main(): Promise<void> {
     console.log(`   ⚠️  ${skipped.length} review(s) skipped`);
   }
 
-  // Step 4: Ingest into ApeAI
+  // Step 4: Ingest into Producty
   const ingestionResult = await ingestReviews(reviews, args.apiUrl, args.token);
 
   // Step 5: Print summary

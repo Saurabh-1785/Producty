@@ -1,5 +1,5 @@
 /**
- * ApeAI Layer 0 — Review Normalizer
+ * Producty Layer 0 — Review Normalizer
  *
  * Converts raw webcmd JSON output into the AppStoreReviewInput shape
  * expected by POST /api/ingestion/appstore.

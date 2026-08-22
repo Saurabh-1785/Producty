@@ -1,5 +1,5 @@
 /**
- * ApeAI Layer 0 — webcmd Bridge
+ * Producty Layer 0 — webcmd Bridge
  *
  * Encapsulates all interactions with the webcmd CLI:
  *   - Check if a google-play adapter already exists

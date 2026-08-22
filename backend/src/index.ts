@@ -49,7 +49,7 @@ const app = express();
 // ─── Startup Logging ──────────────────────────────────────────
 
 console.info('='.repeat(60));
-console.info('🦍 ApeAI — Starting up (Node.js + Express + TypeScript)');
+console.info('🚀 Producty — Starting up (Node.js + Express + TypeScript)');
 console.info('='.repeat(60));
 console.info(`  Supabase:  ${settings.supabaseConfigured ? '✅ configured' : '❌ not configured'}`);
 console.info(`  Google AI: ${settings.googleConfigured ? '✅ configured' : '⏭️  not configured (needed for embeddings)'}`);
@@ -80,7 +80,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (_req: Request, res: Response) => {
   res.json({
-    app: 'ApeAI Product Operations API',
+    app: 'Producty Product Operations API',
     version: '0.2.0',
     docs: 'N/A (use /health to check status)',
     health: '/health',
@@ -172,7 +172,7 @@ const PORT = settings.appPort;
 const HOST = settings.appHost;
 
 app.listen(PORT, HOST, () => {
-  console.info(`🚀 ApeAI Node.js backend running at http://${HOST}:${PORT}`);
+  console.info(`🚀 Producty Node.js backend running at http://${HOST}:${PORT}`);
   console.info(`   Health: http://localhost:${PORT}/health`);
   console.info(`   Root:   http://localhost:${PORT}/`);
   console.info(`   Ingestion: http://localhost:${PORT}/api/ingestion/status`);

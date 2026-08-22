@@ -1,4 +1,4 @@
-# 🦍 ApeAI — Automated Product Engineering AI
+# 🚀 Producty — Automated Product Engineering AI
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
@@ -7,15 +7,15 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Webcmd](https://img.shields.io/badge/webcmd-Layer%200-FF6B35?style=for-the-badge)](https://webcmd.dev/)
 
-ApeAI is a **decoupled, layer-based Product Operations platform** that transforms raw, multi-source user feedback into structured, high-fidelity engineering tickets (BRD, PRD, Epics, Stories, and Technical Tasks). 
+Producty is a **decoupled, layer-based Product Operations platform** that transforms raw, multi-source user feedback into structured, high-fidelity engineering tickets (BRD, PRD, Epics, Stories, and Technical Tasks). 
 
-By leveraging **Google Gemini AI** for embeddings/generations, **Supabase (PostgreSQL + pgvector)** for similarity clustering, and a critical **Human-in-the-Loop review gate**, ApeAI streamlines the pipeline between customer requests and developer backlogs with transparency and control.
+By leveraging **Google Gemini AI** for embeddings/generations, **Supabase (PostgreSQL + pgvector)** for similarity clustering, and a critical **Human-in-the-Loop review gate**, Producty streamlines the pipeline between customer requests and developer backlogs with transparency and control.
 
 ---
 
 ## Architecture Overview
 
-ApeAI is built with a strictly modular architecture where **every layer is decoupled and communicates exclusively via JSON over HTTP**. This prevents direct code imports, ensuring that any single layer can be swapped out (e.g., swapping Google Gemini for OpenAI, or Supabase for local Postgres) without modifying the other layers.
+Producty is built with a strictly modular architecture where **every layer is decoupled and communicates exclusively via JSON over HTTP**. This prevents direct code imports, ensuring that any single layer can be swapped out (e.g., swapping Google Gemini for OpenAI, or Supabase for local Postgres) without modifying the other layers.
 
 > [!TIP]
 > **Layer 0 (NEW)**: Autonomous feedback ingestion powered by [webcmd](https://webcmd.dev). A standalone agent explores public app review pages, extracts structured reviews, and feeds them directly into Layer 1 — no backend changes needed.
@@ -74,7 +74,7 @@ All persistent data is stored in **Supabase**, consolidating PostgreSQL database
 ---
 
 ### Layer 3 — AI & Processing Pipeline
-This represents the brain of ApeAI. Each step is structured as its own independent FastAPI route (`/pipeline/cluster`, `/pipeline/generate-brd`, etc.), transforming structured JSON inputs into high-quality outputs using Google Gemini (`gemini-2.5-flash-lite` in structured JSON mode):
+This represents the brain of Producty. Each step is structured as its own independent FastAPI route (`/pipeline/cluster`, `/pipeline/generate-brd`, etc.), transforming structured JSON inputs into high-quality outputs using Google Gemini (`gemini-2.5-flash-lite` in structured JSON mode):
 
 ```mermaid
 graph TD
@@ -127,7 +127,7 @@ A modern, visually stunning frontend interface built in **Next.js 14 (App Router
 
 ## Complete Local Setup Guide
 
-Follow these steps to clone, configure, and run ApeAI on any other local machine.
+Follow these steps to clone, configure, and run Producty on any other local machine.
 
 ### Prerequisites
 Ensure the following tools are installed:
@@ -268,7 +268,7 @@ Open a separate terminal window and navigate to the `frontend` directory:
 
 ## Verification & Test Scripts
 
-ApeAI includes a complete suite of validation scripts to test the integrity of all five layers without requiring full user interaction.
+Producty includes a complete suite of validation scripts to test the integrity of all five layers without requiring full user interaction.
 
 ### 1. Ingestion Endpoint Sanity Check
 Runs basic HTTP POST/GET requests to verify Layer 1 ingestion pipelines (Manual, Email webhook parser, and mock GitHub issue hooks):

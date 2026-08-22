@@ -157,7 +157,7 @@ export default function EnterpriseLandingPage() {
               <span className="text-slate-400 dark:text-zinc-500">Start building.</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed font-medium tracking-tight">
-              ApeAI is the decoupled Product Operations engine. We ingest raw feedback signals, map vectors, draft Agile requirements, and sync to Jira automatically.
+              Producty is the decoupled Product Operations engine. We ingest raw feedback signals, map vectors, draft Agile requirements, and sync to Jira automatically.
             </p>
           </div>
 
@@ -207,7 +207,7 @@ export default function EnterpriseLandingPage() {
             </div>
 
             <div className="flex items-center justify-center text-[10px] font-bold text-slate-400 dark:text-zinc-500 font-mono select-none px-6 py-1 bg-white dark:bg-zinc-900 rounded-md border border-slate-200 dark:border-zinc-800">
-              api.apeai.io/sandbox/live
+              api.producty.io/sandbox/live
             </div>
 
             <div className="flex items-center gap-2 bg-slate-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 px-3 py-1 rounded-full">
@@ -573,10 +573,10 @@ export default function EnterpriseLandingPage() {
       <footer className="border-t border-slate-200 dark:border-zinc-900 py-12 px-6 bg-white dark:bg-[#000000] text-center text-sm text-slate-500 dark:text-zinc-500">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2 font-black tracking-tight text-slate-900 dark:text-white">
-            <Cpu className="w-5 h-5" /> ApeAI.
+            <Cpu className="w-5 h-5" /> Producty.
           </div>
           <p className="font-medium">
-            © {new Date().getFullYear()} ApeAI. Engineered for Decoupled Product Operations.
+            © {new Date().getFullYear()} Producty. Engineered for Decoupled Product Operations.
           </p>
         </div>
       </footer>

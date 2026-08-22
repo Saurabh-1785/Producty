@@ -1,7 +1,7 @@
-# 🦍 ApeAI Layer 0 — Autonomous Google Play Review Ingestion
+# 📦 Producty Layer 0 — Autonomous Google Play Review Ingestion
 
 > **webcmd-powered agent** that explores the Google Play Store, extracts app reviews,
-> and feeds them into ApeAI's existing ingestion pipeline — with zero backend changes.
+> and feeds them into Producty's existing ingestion pipeline — with zero backend changes.
 
 ---
 
@@ -11,7 +11,7 @@ Layer 0 is a **standalone, decoupled script** that:
 
 1. Uses [webcmd](https://webcmd.dev) to visit a Google Play Store app listing
 2. Extracts public user reviews (name, rating, text, date, helpful count)
-3. Normalizes each review into ApeAI's existing `AppStoreReviewInput` schema
+3. Normalizes each review into Producty's existing `AppStoreReviewInput` schema
 4. POSTs them to `POST /api/ingestion/appstore` — the exact same endpoint that already handles app store reviews
 5. On a second run, **reuses the webcmd adapter** instead of re-exploring — demonstrating the "explore once, learn, reuse forever" lifecycle
 
@@ -47,7 +47,7 @@ Layer 0 is a **standalone, decoupled script** that:
   npm install -g @agentrhq/webcmd
   webcmd skills add
   ```
-- **ApeAI backend** running at `http://localhost:8000`
+- **Producty backend** running at `http://localhost:8000`
 - **Supabase JWT** (get from the frontend after login)
 
 ---
@@ -78,16 +78,16 @@ npx tsx layer0/pull_play_reviews.ts \
 |------|----------|---------|-------------|
 | `--app-id <id>` | ✅ | — | Android package name (e.g., `com.whatsapp`) |
 | `--limit <n>` | | `10` | Max reviews to pull (1–100) |
-| `--token <jwt>` | ✅ | `$APEAI_AUTH_TOKEN` | Supabase JWT for API auth |
-| `--api-url <url>` | | `http://localhost:8000` | ApeAI backend URL |
+| `--token <jwt>` | | `$PRODUCTY_AUTH_TOKEN` | Supabase JWT for API auth (optional) |
+| `--api-url <url>` | | `http://localhost:8000` | Producty backend URL |
 | `--force-explore` | | `false` | Skip adapter reuse, force fresh browser exploration |
 | `--help` | | | Show help |
 
 ### Environment Variables
 
 ```bash
-export APEAI_AUTH_TOKEN="eyJ..."         # Alternative to --token
-export APEAI_API_URL="http://localhost:8000"  # Alternative to --api-url
+export PRODUCTY_AUTH_TOKEN="eyJ..."         # Alternative to --token
+export PRODUCTY_API_URL="http://localhost:8000"  # Alternative to --api-url
 ```
 
 ---
@@ -168,7 +168,7 @@ This matches `AppStoreReviewInput` from [`backend/src/types/feedback.ts`](/backe
 
 ```
 ═══════════════════════════════════════════════════════════════
-  🦍 ApeAI Layer 0 — Autonomous Play Store Review Ingestion
+  📦 Producty Layer 0 — Autonomous Play Store Review Ingestion
 ═══════════════════════════════════════════════════════════════
   App ID:        com.whatsapp
   Review limit:  10
@@ -208,7 +208,7 @@ This matches `AppStoreReviewInput` from [`backend/src/types/feedback.ts`](/backe
   Total time:         2,456ms
 ═══════════════════════════════════════════════════════════════
 
-  ✅ SUCCESS — 9 review(s) are now in ApeAI's pipeline.
+  ✅ SUCCESS — 9 review(s) are now in Producty's pipeline.
      They will appear in the dashboard and are ready for Layer 2 clustering.
 ```
 

@@ -8,7 +8,7 @@ import { AuthProvider } from '@/components/AuthContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'ApeAI — Automated Product Engineering AI',
+  title: 'Producty — Automated Product Engineering AI',
   description: 'AI-assisted feedback clustering, multi-stage document drafting, and human-approved ticket publishing.',
 };
 

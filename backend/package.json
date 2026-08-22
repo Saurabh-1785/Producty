@@ -1,7 +1,7 @@
 {
-  "name": "apeai-backend",
+  "name": "producty-backend",
   "version": "0.2.0",
-  "description": "ApeAI Product Operations API — Node.js + Express + TypeScript",
+  "description": "Producty Product Operations API — Node.js + Express + TypeScript",
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",

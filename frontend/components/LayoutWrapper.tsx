@@ -74,7 +74,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
       <div className="min-h-screen bg-slate-50 dark:bg-black text-slate-900 dark:text-zinc-100 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <Cpu className="w-10 h-10 text-slate-900 dark:text-white animate-spin" />
-          <span className="text-sm font-semibold tracking-wide text-slate-400">Loading ApeAI...</span>
+          <span className="text-sm font-semibold tracking-wide text-slate-400">Loading Producty...</span>
         </div>
       </div>
     );
@@ -92,7 +92,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
                   <Cpu className="w-5 h-5" />
                 </div>
                 <div>
-                  <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white transition-colors">ApeAI</h1>
+                  <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white transition-colors">Producty</h1>
                   <p className="text-[9px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-widest -mt-1 transition-colors">Product Ops</p>
                 </div>
               </Link>
@@ -136,7 +136,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
                 <Cpu className="w-5 h-5" />
               </div>
               <div>
-                <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white">ApeAI</h1>
+                <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white">Producty</h1>
                 <p className="text-[9px] font-bold text-slate-500 dark:text-zinc-400 uppercase tracking-widest -mt-1">Product Ops</p>
               </div>
             </Link>
@@ -205,7 +205,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
               <div className="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-zinc-900">
                 <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                   <Cpu className="w-5 h-5 text-slate-900 dark:text-white" />
-                  <span className="font-bold text-slate-900 dark:text-white">ApeAI</span>
+                  <span className="font-bold text-slate-900 dark:text-white">Producty</span>
                 </Link>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
@@ -323,7 +323,7 @@ export default function LayoutWrapper({ children }: LayoutWrapperProps) {
                   {profileDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-[#09090b] border border-slate-200 dark:border-zinc-800 rounded-xl shadow-lg shadow-slate-900/10 py-2 z-50 animate-slide-up">
                       <div className="px-4 py-2 border-b border-slate-100 dark:border-zinc-900 mb-2">
-                        <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{profile?.full_name || 'ApeAI User'}</p>
+                        <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{profile?.full_name || 'Producty User'}</p>
                         <p className="text-[10px] text-slate-500 dark:text-zinc-500 truncate">{user.email}</p>
                       </div>
                       <Link 

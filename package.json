@@ -1,7 +1,7 @@
 {
-  "name": "apeai",
+  "name": "producty",
   "version": "1.0.0",
-  "description": "ApeAI Product Operations Platform",
+  "description": "Producty Product Operations Platform",
   "scripts": {
     "build": "npm install --prefix backend && npm run --prefix backend build",
     "start": "npm run --prefix backend start"

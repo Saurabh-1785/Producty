@@ -50,7 +50,7 @@ export default function LoginPage() {
           </div>
           <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Welcome back</h2>
           <p className="mt-2 text-sm text-slate-500 dark:text-zinc-400 font-medium">
-            Sign in to your ApeAI workspace
+            Sign in to your Producty workspace
           </p>
         </div>
 

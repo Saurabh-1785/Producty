@@ -1,8 +1,8 @@
 /**
- * ApeAI Layer 0 — Ingestion Client
+ * Producty Layer 0 — Ingestion Client
  *
  * HTTP client that POSTs normalized AppStoreReviewInput[]
- * to the existing ApeAI backend endpoint:
+ * to the existing Producty backend endpoint:
  *
  *   POST /api/ingestion/appstore
  *   Authorization: Bearer <supabase-jwt>
@@ -36,10 +36,10 @@ const REQUEST_TIMEOUT_MS = 30_000;
 // ─── Client ───────────────────────────────────────────────────
 
 /**
- * POSTs an array of normalized reviews to ApeAI's ingestion endpoint.
+ * POSTs an array of normalized reviews to Producty's ingestion endpoint.
  *
  * @param reviews   - Array of AppStoreReviewInput objects to ingest
- * @param apiUrl    - Base URL of the ApeAI backend (default: http://localhost:8000)
+ * @param apiUrl    - Base URL of the Producty backend (default: http://localhost:8000)
  * @param authToken - Supabase JWT bearer token for authentication
  * @returns IngestionResult with saved count, errors, and status
  */
